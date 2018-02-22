@@ -10,6 +10,10 @@ DigitalOut green(LED2,1);
 void blink(void){
     green = !green;
 }
+DigitalOut blue(LED3,1);
+void pulse(void){
+  blue = !blue;
+}
 
 Serial pc(USBTX, USBRX);
 Thread worker;
@@ -21,9 +25,10 @@ int main() {
     pc.printf("ready");
     queue.call_every(500, flash);
     queue.call_every(300, blink);
-    pc.printf("dispatching...");
+    queue.call_every(100, pulse);
+    printf("dispatching...");
     queue.dispatch_forever();
     //worker.start(callback(&queue, &EventQueue::dispatch_forever ));
-    pc.printf("dispatched");
+    printf("dispatched");
     while(1){}
 }
